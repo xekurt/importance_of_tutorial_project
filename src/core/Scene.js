@@ -1,10 +1,6 @@
 import * as THREE from 'three';
 import { CAMERA_SETTINGS, LIGHTING, COLORS } from '../config/constants.js';
 
-/**
- * Scene manager - handles Three.js scene, camera, renderer, and lighting setup
- * Responsibility: Scene initialization and rendering
- */
 export class Scene {
     constructor() {
         this.scene = new THREE.Scene();

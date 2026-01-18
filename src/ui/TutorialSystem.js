@@ -1,16 +1,9 @@
-/**
- * Tutorial system - manages tutorial text and context-aware fail hints
- * Responsibility: Tutorial messaging logic
- */
 export class TutorialSystem {
     constructor(uiManager) {
         this.uiManager = uiManager;
         this.hintTimeout = null;
     }
 
-    /**
-     * Show stage-specific tutorial text
-     */
     showStageText(stage, stageIndex) {
         let type = 'normal';
         if (stageIndex === 1) type = 'success';
@@ -20,9 +13,6 @@ export class TutorialSystem {
         this.uiManager.updateTutorialText(stage.text, type);
     }
 
-    /**
-     * Show context-aware fail hint based on stage and charge level
-     */
     showFailHint(stageIndex, chargeLevel) {
         let hint = '';
 
@@ -44,18 +34,13 @@ export class TutorialSystem {
 
         this.uiManager.updateTutorialText(hint, 'warning');
 
-        // Clear hint after 3 seconds
         if (this.hintTimeout) {
             clearTimeout(this.hintTimeout);
         }
         this.hintTimeout = setTimeout(() => {
-            // This will be handled by stage manager callback
         }, 3000);
     }
 
-    /**
-     * Clear any pending hint timeout
-     */
     clearHintTimeout() {
         if (this.hintTimeout) {
             clearTimeout(this.hintTimeout);

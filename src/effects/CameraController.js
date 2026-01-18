@@ -1,9 +1,5 @@
 import { CAMERA_SETTINGS } from '../config/constants.js';
 
-/**
- * Camera controller - handles smooth camera following
- * Responsibility: Camera movement logic
- */
 export class CameraController {
     constructor(camera) {
         this.camera = camera;
@@ -11,9 +7,6 @@ export class CameraController {
         this.lerpFactor = CAMERA_SETTINGS.LERP_FACTOR;
     }
 
-    /**
-     * Smoothly follow target position
-     */
     follow(targetPosition) {
         const targetCameraX = targetPosition.x;
         const targetCameraZ = targetPosition.z + this.followDistance;

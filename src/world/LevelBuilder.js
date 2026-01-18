@@ -1,10 +1,6 @@
 import * as THREE from 'three';
 import { PLATFORMS, COLORS } from '../config/constants.js';
 
-/**
- * Level builder - creates all platforms and goal area
- * Responsibility: Level geometry construction
- */
 export class LevelBuilder {
     constructor(scene) {
         this.scene = scene;
@@ -26,7 +22,6 @@ export class LevelBuilder {
                 platformData.size.z
             );
 
-            // Use goal material for goal platform
             const material = platformData.isGoal
                 ? new THREE.MeshStandardMaterial({
                     color: COLORS.GOAL,

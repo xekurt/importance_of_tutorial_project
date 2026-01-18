@@ -1,9 +1,5 @@
 import { STAGES } from '../config/constants.js';
 
-/**
- * Stage manager - tracks and updates current stage based on player position
- * Responsibility: Stage progression logic
- */
 export class StageManager {
     constructor() {
         this.stages = STAGES;
@@ -11,9 +7,6 @@ export class StageManager {
         this.stageChangeCallback = null;
     }
 
-    /**
-     * Update stage based on player position
-     */
     updateStage(playerPosition) {
         const z = playerPosition.z;
         let newStageIndex = this.currentStageIndex;
@@ -25,7 +18,7 @@ export class StageManager {
         } else if (z >= 25 && z < 45) {
             newStageIndex = 2;
         } else if (z >= 45) {
-            newStageIndex = 3; // Goal
+            newStageIndex = 3;
         }
 
         if (newStageIndex !== this.currentStageIndex) {
@@ -36,9 +29,6 @@ export class StageManager {
         }
     }
 
-    /**
-     * Get current stage object
-     */
     getCurrentStage() {
         if (this.currentStageIndex >= this.stages.length) {
             return { name: 'Goal!', text: '🎉 Tutorial Complete! You mastered the Charge Jump!' };
@@ -46,16 +36,10 @@ export class StageManager {
         return this.stages[this.currentStageIndex];
     }
 
-    /**
-     * Get current stage index
-     */
     getCurrentStageIndex() {
         return this.currentStageIndex;
     }
 
-    /**
-     * Register callback for stage changes
-     */
     onStageChange(callback) {
         this.stageChangeCallback = callback;
     }

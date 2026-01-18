@@ -1,13 +1,11 @@
-// Physics constants
 export const GRAVITY = -20;
 export const MOVE_SPEED = 0.25;
 export const MOVE_ACCELERATION = 1;
 export const FRICTION = 0.85;
 export const MIN_JUMP_VELOCITY = 10;
 export const MAX_JUMP_VELOCITY = 18;
-export const CHARGE_TIME = 1.0; // seconds to full charge
+export const CHARGE_TIME = 1.0;
 
-// Colors
 export const COLORS = {
     PLAYER_BASE: 0xff3344,
     PLAYER_CHARGED: 0x8b0000,
@@ -16,7 +14,6 @@ export const COLORS = {
     SKY: 0x87ceeb
 };
 
-// Stage definitions
 export const STAGES = [
     {
         name: 'Stage 1',
@@ -45,34 +42,30 @@ export const STAGES = [
     }
 ];
 
-// Platform definitions
 export const PLATFORMS = [
-    { position: { x: 0, y: -0.25, z: 2.5 }, size: { x: 10, y: 0.5, z: 15 } },  // Stage 1
-    { position: { x: 0, y: -0.25, z: 12 }, size: { x: 10, y: 0.5, z: 4 } },    // Stage 2a
-    { position: { x: 0, y: -0.25, z: 21 }, size: { x: 10, y: 0.5, z: 8 } },    // Stage 2b
-    { position: { x: 0, y: -0.25, z: 27.5 }, size: { x: 10, y: 0.5, z: 5 } },  // Stage 3a
-    { position: { x: 0, y: -0.25, z: 41.5 }, size: { x: 10, y: 0.5, z: 7 } },  // Stage 3b
-    { position: { x: 0, y: -0.25, z: 47.5 }, size: { x: 10, y: 0.5, z: 5 }, isGoal: true } // Goal
+    { position: { x: 0, y: -0.25, z: 2.5 }, size: { x: 10, y: 0.5, z: 15 } },
+    { position: { x: 0, y: -0.25, z: 12 }, size: { x: 10, y: 0.5, z: 4 } },
+    { position: { x: 0, y: -0.25, z: 21 }, size: { x: 10, y: 0.5, z: 8 } },
+    { position: { x: 0, y: -0.25, z: 27.5 }, size: { x: 10, y: 0.5, z: 5 } },
+    { position: { x: 0, y: -0.25, z: 41.5 }, size: { x: 10, y: 0.5, z: 7 } },
+    { position: { x: 0, y: -0.25, z: 47.5 }, size: { x: 10, y: 0.5, z: 5 }, isGoal: true }
 ];
 
-// Collision bounds for platforms
 export const COLLISION_BOUNDS = [
-    { minZ: -5, maxZ: 10, minX: -5, maxX: 5 },    // Stage 1
-    { minZ: 10, maxZ: 14, minX: -5, maxX: 5 },    // Stage 2a
-    { minZ: 17, maxZ: 25, minX: -5, maxX: 5 },    // Stage 2b
-    { minZ: 25, maxZ: 30, minX: -5, maxX: 5 },    // Stage 3a
-    { minZ: 38, maxZ: 45, minX: -5, maxX: 5 },    // Stage 3b
-    { minZ: 45, maxZ: 50, minX: -5, maxX: 5 }     // Goal
+    { minZ: -5, maxZ: 10, minX: -5, maxX: 5 },
+    { minZ: 10, maxZ: 14, minX: -5, maxX: 5 },
+    { minZ: 17, maxZ: 25, minX: -5, maxX: 5 },
+    { minZ: 25, maxZ: 30, minX: -5, maxX: 5 },
+    { minZ: 38, maxZ: 45, minX: -5, maxX: 5 },
+    { minZ: 45, maxZ: 50, minX: -5, maxX: 5 }
 ];
 
-// Particle settings
 export const PARTICLE_SETTINGS = {
     GOAL_COUNT: 100,
     TRAIL_MAX: 50,
     TRAIL_LIFETIME: 0.5
 };
 
-// Camera settings
 export const CAMERA_SETTINGS = {
     FOV: 75,
     NEAR: 0.1,
@@ -82,7 +75,6 @@ export const CAMERA_SETTINGS = {
     LERP_FACTOR: 0.1
 };
 
-// Lighting settings
 export const LIGHTING = {
     AMBIENT_INTENSITY: 0.6,
     DIRECTIONAL_INTENSITY: 0.8,

@@ -1,17 +1,10 @@
 import { COLLISION_BOUNDS } from '../config/constants.js';
 
-/**
- * Collision system - handles platform collision detection
- * Responsibility: Collision detection logic
- */
 export class CollisionSystem {
     constructor() {
         this.platforms = COLLISION_BOUNDS;
     }
 
-    /**
-     * Check if player is on any platform
-     */
     checkGroundCollision(player) {
         const position = player.getPosition();
         const playerBottom = position.y - 0.5;
@@ -34,9 +27,6 @@ export class CollisionSystem {
         return false;
     }
 
-    /**
-     * Check if player has fallen off the level
-     */
     hasFallen(player) {
         return player.getPosition().y < -5;
     }

@@ -1,9 +1,6 @@
 import * as THREE from 'three';
 import { PARTICLE_SETTINGS, COLORS } from '../config/constants.js';
 
-/**
- * Trail particle - individual particle with lifetime
- */
 class TrailParticle {
     constructor(scene, position, color) {
         const geometry = new THREE.SphereGeometry(0.1, 8, 8);
@@ -32,9 +29,6 @@ class TrailParticle {
     }
 }
 
-/**
- * Trail particle system - manages player trail particles
- */
 export class TrailParticleSystem {
     constructor(scene) {
         this.scene = scene;
@@ -61,9 +55,6 @@ export class TrailParticleSystem {
     }
 }
 
-/**
- * Goal particle system - continuous particle emitter at goal
- */
 export class GoalParticleSystem {
     constructor(scene) {
         this.scene = scene;
