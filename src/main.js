@@ -196,7 +196,10 @@ class Game {
         () => this.loadLevel(this.currentLevelIndex)     // Retry
       );
     } else {
-      this.uiManager.updateTutorialText('YOU MASTERED THE GAME!', 'complete');
+      this.uiManager.showFinishMenu(
+        () => this.uiManager.showMainMenu(), // Go to main menu
+        () => this.loadLevel(this.currentLevelIndex) // Retry Level 3
+      );
     }
   }
 

@@ -427,6 +427,58 @@ canvas {
 }
 
 #next-level-button:active,
-#retry-level-button:active {
+#retry-level-button:active,
+#finish-menu-button:active,
+#finish-retry-button:active {
   transform: translateY(0);
+}
+
+#finish-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2500;
+  backdrop-filter: blur(15px);
+}
+
+#finish-menu-button {
+  background: #ffd700;
+  color: #000;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+#finish-menu-button:hover {
+  background: #ffea00;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+#finish-retry-button {
+  background: transparent;
+  color: #ffd700;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #ffd700;
+}
+
+#finish-retry-button:hover {
+  background: rgba(255, 215, 0, 0.1);
+  transform: translateY(-3px);
 }

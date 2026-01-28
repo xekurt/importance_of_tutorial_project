@@ -18,6 +18,10 @@ export class UIManager {
         this.mainMenuOverlay = document.getElementById('main-menu-overlay');
         this.startTutorialBtn = document.getElementById('start-tutorial-btn');
         this.startGameBtn = document.getElementById('start-game-btn');
+
+        this.finishOverlay = document.getElementById('finish-overlay');
+        this.finishMenuButton = document.getElementById('finish-menu-button');
+        this.finishRetryButton = document.getElementById('finish-retry-button');
     }
 
     onStartTutorial(callback) {
@@ -40,6 +44,31 @@ export class UIManager {
 
     hideMainMenu() {
         this.mainMenuOverlay.style.display = 'none';
+    }
+
+    showFinishMenu(onMenu, onRetry) {
+        this.finishOverlay.style.display = 'flex';
+
+        // Remove old listeners
+        const newMenuBtn = this.finishMenuButton.cloneNode(true);
+        const newRetryBtn = this.finishRetryButton.cloneNode(true);
+        this.finishMenuButton.parentNode.replaceChild(newMenuBtn, this.finishMenuButton);
+        this.finishRetryButton.parentNode.replaceChild(newRetryBtn, this.finishRetryButton);
+        this.finishMenuButton = newMenuBtn;
+        this.finishRetryButton = newRetryBtn;
+
+        this.finishMenuButton.addEventListener('click', () => {
+            this.hideFinishMenu();
+            onMenu();
+        });
+        this.finishRetryButton.addEventListener('click', () => {
+            this.hideFinishMenu();
+            onRetry();
+        });
+    }
+
+    hideFinishMenu() {
+        this.finishOverlay.style.display = 'none';
     }
 
     updateHealthBar(health) {
