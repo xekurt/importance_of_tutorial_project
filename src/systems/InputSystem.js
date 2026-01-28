@@ -12,10 +12,12 @@ export class InputSystem {
             w: false,
             a: false,
             d: false,
+            c: false,
         };
 
         this.chargeStartCallback = null;
         this.chargeEndCallback = null;
+        this.cameraToggleCallback = null;
 
         this.setupEventListeners();
     }
@@ -32,6 +34,8 @@ export class InputSystem {
                 this.keys.Space = true;
                 this.chargeStartCallback();
             }
+        } else if (e.key === 'c' || e.key === 'C') {
+            if (this.cameraToggleCallback) this.cameraToggleCallback();
         } else if (this.keys.hasOwnProperty(e.key)) {
             this.keys[e.key] = true;
         }
@@ -57,6 +61,10 @@ export class InputSystem {
 
     onChargeEnd(callback) {
         this.chargeEndCallback = callback;
+    }
+
+    onCameraToggle(callback) {
+        this.cameraToggleCallback = callback;
     }
 
     getMovementVector() {

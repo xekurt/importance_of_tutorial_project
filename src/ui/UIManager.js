@@ -11,6 +11,21 @@ export class UIManager {
         this.completeOverlay = document.getElementById('complete-overlay');
         this.nextLevelButton = document.getElementById('next-level-button');
         this.retryLevelButton = document.getElementById('retry-level-button');
+
+        this.healthBarFill = document.getElementById('health-bar-fill');
+        this.healthText = document.getElementById('health-text');
+    }
+
+    updateHealthBar(health) {
+        const percentage = Math.max(0, health);
+        this.healthBarFill.style.width = percentage + '%';
+        this.healthText.textContent = `${Math.ceil(percentage)}% HP`;
+
+        if (percentage < 30) {
+            this.healthBarFill.style.background = '#ff0000';
+        } else {
+            this.healthBarFill.style.background = 'linear-gradient(90deg, #ff4444, #ff6666)';
+        }
     }
 
     updateChargeBar(level) {

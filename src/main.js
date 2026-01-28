@@ -16,6 +16,10 @@ class Game {
   constructor() {
     this.currentLevelIndex = 0;
     this.isGameOver = false;
+    this.obstacleFailCount = 0;
+    this.health = 100;
+    this.lastDamageTime = 0;
+    this.damageCooldown = 500; // ms
     this.initializeSystems();
     this.loadLevel(this.currentLevelIndex);
     this.wireUpEvents();
@@ -38,11 +42,17 @@ class Game {
   }
 
   loadLevel(index) {
+    if (this.currentLevelIndex !== index) {
+      this.obstacleFailCount = 0;
+    }
     this.currentLevelIndex = index;
     const levelData = LEVELS[index];
 
     // Reset game state
     this.isGameOver = false;
+    this.obstacleFailCount = 0;
+    this.health = 100;
+    this.uiManager.updateHealthBar(this.health);
 
     // Build level
     this.levelBuilder.buildLevel(levelData);
@@ -71,7 +81,38 @@ class Game {
     if (this.isGameOver) return;
     this.isGameOver = true;
 
-    this.uiManager.showRetryMenu(message, () => {
+    let displayMessage = message;
+
+    if (message === 'HIT AN OBSTACLE!') {
+      const now = performance.now();
+      if (now - this.lastDamageTime < this.damageCooldown) {
+        this.isGameOver = false;
+        return;
+      }
+      this.lastDamageTime = now;
+
+      const damage = Math.floor(Math.random() * (15 - 7 + 1)) + 7;
+      this.health -= damage;
+      this.uiManager.updateHealthBar(this.health);
+
+      if (this.health > 0) {
+        this.isGameOver = false;
+        return;
+      }
+
+      message = 'HEALTH DEPLETED!';
+      displayMessage = message;
+    }
+
+    // Specific hint for Level 2 after 3 obstacle hits
+    if (this.currentLevelIndex === 1 && message === 'HIT AN OBSTACLE!') {
+      this.obstacleFailCount++;
+      if (this.obstacleFailCount >= 3) {
+        displayMessage = `${message}\nHINT: Press 'C' to toggle camera angle!`;
+      }
+    }
+
+    this.uiManager.showRetryMenu(displayMessage, () => {
       this.loadLevel(this.currentLevelIndex);
     });
   }
@@ -109,6 +150,10 @@ class Game {
         this.tutorialSystem.showStageText(stage, stageIndex);
         this.uiManager.showArrowIndicator(this.currentLevelIndex === 0 && stageIndex === 0);
       }
+    });
+
+    this.inputSystem.onCameraToggle(() => {
+      this.cameraController.toggleAngle();
     });
   }
 
@@ -148,9 +193,11 @@ class Game {
     this.physicsSystem.handleGroundCollision(this.player);
 
     // Collision checks
-    if (this.collisionSystem.checkObstacleCollision(this.player)) {
+    if (this.collisionSystem.resolveObstacleCollisions(this.player)) {
       this.handleGameOver('HIT AN OBSTACLE!');
-    } else if (this.collisionSystem.hasFallen(this.player)) {
+    }
+
+    if (this.collisionSystem.hasFallen(this.player)) {
       this.handleGameOver('FELL INTO THE ABYSS!');
     }
 

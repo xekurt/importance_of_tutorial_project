@@ -1,13 +1,13 @@
-export const GRAVITY = -20;
-export const MOVE_SPEED = 0.25;
-export const MOVE_ACCELERATION = 1;
+export const GRAVITY = -25;
+export const MOVE_SPEED = 0.5;
+export const MOVE_ACCELERATION = 1.5;
 export const FRICTION = 0.85;
-export const MIN_JUMP_VELOCITY = 10;
+export const MIN_JUMP_VELOCITY = 12;
 export const MAX_JUMP_VELOCITY = 18;
-export const CHARGE_TIME = 1.0;
+export const CHARGE_TIME = 0.8;
 
 export const COLORS = {
-    PLAYER_BASE: 0xff3344,
+    PLAYER_BASE: 0xff6666,
     PLAYER_CHARGED: 0x8b0000,
     PLATFORM: 0x4a4a4a,
     OBSTACLE: 0xff5500,
@@ -107,9 +107,9 @@ export const LEVELS = [
             { minZ: 45, maxZ: 55, minX: -5, maxX: 5 }
         ],
         obstacles: [
-            { position: { x: 0, y: 3, z: 12 }, size: { x: 10, y: 2, z: 2 } },
-            { position: { x: 0, y: 4, z: 20 }, size: { x: 10, y: 2, z: 2 } },
-            { position: { x: 0, y: 5, z: 40 }, size: { x: 10, y: 2, z: 2 } }
+            { position: { x: 0, y: 3, z: 12 }, size: { x: 10, y: 1, z: 0.5 } },
+            { position: { x: 0, y: 4, z: 20 }, size: { x: 10, y: 1, z: 0.5 } },
+            { position: { x: 0, y: 5, z: 40 }, size: { x: 10, y: 1, z: 0.5 } }
         ]
     },
     {
@@ -134,9 +134,9 @@ export const LEVELS = [
             { minZ: 35, maxZ: 45, minX: -5, maxX: 5 }
         ],
         obstacles: [
-            { position: { x: 0, y: 4, z: 20 }, size: { x: 2, y: 8, z: 2 } },
-            { position: { x: 3, y: 4, z: 20 }, size: { x: 2, y: 8, z: 2 } },
-            { position: { x: -3, y: 4, z: 20 }, size: { x: 2, y: 8, z: 2 } }
+            { position: { x: 0, y: 4, z: 20 }, size: { x: 1, y: 6, z: 0.5 } },
+            { position: { x: 3, y: 4, z: 20 }, size: { x: 1, y: 6, z: 0.5 } },
+            { position: { x: -3, y: 4, z: 20 }, size: { x: 1, y: 6, z: 0.5 } }
         ]
     }
 ];
