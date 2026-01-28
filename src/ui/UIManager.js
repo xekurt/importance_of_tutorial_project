@@ -4,6 +4,13 @@ export class UIManager {
         this.chargeBarFill = document.getElementById('charge-bar-fill');
         this.stageIndicator = document.getElementById('stage-indicator');
         this.arrowIndicator = document.getElementById('arrow-indicator');
+        this.retryOverlay = document.getElementById('retry-overlay');
+        this.retryMessage = document.getElementById('retry-message');
+        this.retryButton = document.getElementById('retry-button');
+
+        this.completeOverlay = document.getElementById('complete-overlay');
+        this.nextLevelButton = document.getElementById('next-level-button');
+        this.retryLevelButton = document.getElementById('retry-level-button');
     }
 
     updateChargeBar(level) {
@@ -32,5 +39,34 @@ export class UIManager {
 
     showArrowIndicator(show) {
         this.arrowIndicator.style.display = show ? 'block' : 'none';
+    }
+
+    showRetryMenu(message, onRetry) {
+        this.retryMessage.textContent = message;
+        this.retryOverlay.style.display = 'flex';
+        this.retryButton.onclick = () => {
+            this.hideRetryMenu();
+            if (onRetry) onRetry();
+        };
+    }
+
+    hideRetryMenu() {
+        this.retryOverlay.style.display = 'none';
+    }
+
+    showCompleteMenu(onNext, onRetry) {
+        this.completeOverlay.style.display = 'flex';
+        this.nextLevelButton.onclick = () => {
+            this.hideCompleteMenu();
+            if (onNext) onNext();
+        };
+        this.retryLevelButton.onclick = () => {
+            this.hideCompleteMenu();
+            if (onRetry) onRetry();
+        };
+    }
+
+    hideCompleteMenu() {
+        this.completeOverlay.style.display = 'none';
     }
 }

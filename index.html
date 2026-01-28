@@ -24,6 +24,25 @@
     <div class="arrow-icon">↓</div>
   </div>
 
+  <div id="retry-overlay" style="display: none;">
+    <div class="retry-content">
+      <h1>GAME OVER</h1>
+      <p id="retry-message">Better luck next time!</p>
+      <button id="retry-button">RETRY</button>
+    </div>
+  </div>
+
+  <div id="complete-overlay" style="display: none;">
+    <div class="complete-content">
+      <h1>LEVEL COMPLETE!</h1>
+      <p id="complete-message">You mastered this level!</p>
+      <div class="complete-buttons">
+        <button id="next-level-button">NEXT LEVEL</button>
+        <button id="retry-level-button">RETRY LEVEL</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="src/main.js"></script>
 </body>
 

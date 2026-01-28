@@ -10,11 +10,14 @@ import { UIManager } from './ui/UIManager.js';
 import { TutorialSystem } from './ui/TutorialSystem.js';
 import { TrailParticleSystem, GoalParticleSystem } from './effects/ParticleSystem.js';
 import { CameraController } from './effects/CameraController.js';
-import { CHARGE_TIME, STAGES } from './config/constants.js';
+import { CHARGE_TIME, LEVELS } from './config/constants.js';
 
 class Game {
   constructor() {
+    this.currentLevelIndex = 0;
+    this.isGameOver = false;
     this.initializeSystems();
+    this.loadLevel(this.currentLevelIndex);
     this.wireUpEvents();
     this.startGameLoop();
   }
@@ -23,7 +26,6 @@ class Game {
     this.sceneManager = new Scene();
     this.levelBuilder = new LevelBuilder(this.sceneManager.getScene());
     this.stageManager = new StageManager();
-    this.player = new Player(this.sceneManager.getScene(), STAGES[0].spawnPoint);
     this.physicsSystem = PhysicsSystem;
     this.inputSystem = new InputSystem();
     this.collisionSystem = new CollisionSystem();
@@ -32,22 +34,58 @@ class Game {
     this.trailParticles = new TrailParticleSystem(this.sceneManager.getScene());
     this.goalParticles = new GoalParticleSystem(this.sceneManager.getScene());
     this.cameraController = new CameraController(this.sceneManager.getCamera());
-    this.uiManager.updateStageIndicator(STAGES[0].name);
-    this.tutorialSystem.showStageText(STAGES[0], 0);
-    this.uiManager.showArrowIndicator(true);
     this.lastTime = performance.now();
+  }
+
+  loadLevel(index) {
+    this.currentLevelIndex = index;
+    const levelData = LEVELS[index];
+
+    // Reset game state
+    this.isGameOver = false;
+
+    // Build level
+    this.levelBuilder.buildLevel(levelData);
+
+    // Update systems with level data
+    this.collisionSystem.setLevel(levelData);
+    this.stageManager.setLevel(levelData);
+
+    // Spawn player
+    const spawnPoint = levelData.stages[0].spawnPoint;
+    if (!this.player) {
+      this.player = new Player(this.sceneManager.getScene(), spawnPoint);
+    } else {
+      this.player.respawn(spawnPoint);
+    }
+
+    // UI Updates
+    this.uiManager.updateStageIndicator(`${levelData.name} - Stage 1`);
+    this.tutorialSystem.showStageText(levelData.stages[0], 0);
+    this.uiManager.showArrowIndicator(index === 0);
+    this.uiManager.hideRetryMenu();
+    this.uiManager.hideCompleteMenu();
+  }
+
+  handleGameOver(message) {
+    if (this.isGameOver) return;
+    this.isGameOver = true;
+
+    this.uiManager.showRetryMenu(message, () => {
+      this.loadLevel(this.currentLevelIndex);
+    });
   }
 
   wireUpEvents() {
     this.inputSystem.onChargeStart(() => {
-      if (this.player.isGrounded) {
+      if (this.player.isGrounded && !this.isGameOver) {
         this.player.isCharging = true;
         this.player.chargeStartTime = performance.now();
       }
     });
 
     this.inputSystem.onChargeEnd(() => {
-      if (this.player.isCharging) {
+      if (this.player.isCharging && !this.isGameOver) {
         const jumpVelocity = InputSystem.calculateJumpVelocity(this.player.chargeLevel);
         this.player.velocity.y = jumpVelocity;
         this.player.isGrounded = false;
@@ -61,13 +99,36 @@ class Game {
 
     this.stageManager.onStageChange((stageIndex) => {
       const stage = this.stageManager.getCurrentStage();
-      this.uiManager.updateStageIndicator(stage.name);
-      this.tutorialSystem.showStageText(stage, stageIndex);
-      this.uiManager.showArrowIndicator(stageIndex === 0);
+      const levelData = LEVELS[this.currentLevelIndex];
+
+      if (stageIndex >= levelData.stages.length) {
+        // Level Complete!
+        this.handleLevelComplete();
+      } else {
+        this.uiManager.updateStageIndicator(`${levelData.name} - ${stage.name}`);
+        this.tutorialSystem.showStageText(stage, stageIndex);
+        this.uiManager.showArrowIndicator(this.currentLevelIndex === 0 && stageIndex === 0);
+      }
     });
   }
 
+  handleLevelComplete() {
+    this.isGameOver = true; // Pause gameplay
+    this.goalParticles.spawn(this.player.getPosition().clone());
+
+    if (this.currentLevelIndex < LEVELS.length - 1) {
+      this.uiManager.showCompleteMenu(
+        () => this.loadLevel(this.currentLevelIndex + 1), // Next
+        () => this.loadLevel(this.currentLevelIndex)     // Retry
+      );
+    } else {
+      this.uiManager.updateTutorialText('YOU MASTERED THE GAME!', 'complete');
+    }
+  }
+
   update(deltaTime) {
+    if (this.isGameOver) return;
+
     if (this.player.isCharging && this.player.isGrounded) {
       const chargeTime = (performance.now() - this.player.chargeStartTime) / 1000;
       this.player.chargeLevel = Math.min(chargeTime / CHARGE_TIME, 1.0);
@@ -86,8 +147,11 @@ class Game {
     this.player.isGrounded = this.collisionSystem.checkGroundCollision(this.player);
     this.physicsSystem.handleGroundCollision(this.player);
 
-    if (this.collisionSystem.hasFallen(this.player)) {
-      this.handleRespawn();
+    // Collision checks
+    if (this.collisionSystem.checkObstacleCollision(this.player)) {
+      this.handleGameOver('HIT AN OBSTACLE!');
+    } else if (this.collisionSystem.hasFallen(this.player)) {
+      this.handleGameOver('FELL INTO THE ABYSS!');
     }
 
     this.stageManager.updateStage(this.player.getPosition());
@@ -102,17 +166,6 @@ class Game {
     this.trailParticles.update(deltaTime);
     this.goalParticles.update(deltaTime);
     this.cameraController.follow(this.player.getPosition());
-  }
-
-  handleRespawn() {
-    const currentStage = this.stageManager.getCurrentStage();
-    const stageIndex = this.stageManager.getCurrentStageIndex();
-    this.tutorialSystem.showFailHint(stageIndex, this.player.lastChargeLevel);
-    this.player.respawn(currentStage.spawnPoint);
-    this.uiManager.updateChargeBar(0);
-    setTimeout(() => {
-      this.tutorialSystem.showStageText(currentStage, stageIndex);
-    }, 3000);
   }
 
   startGameLoop() {

@@ -7,7 +7,11 @@ export class InputSystem {
             ArrowDown: false,
             ArrowLeft: false,
             ArrowRight: false,
-            Space: false
+            Space: false,
+            s: false,
+            w: false,
+            a: false,
+            d: false,
         };
 
         this.chargeStartCallback = null;
@@ -34,6 +38,8 @@ export class InputSystem {
     }
 
     handleKeyUp(e) {
+        console.info(e.key)
+
         if (e.key === ' ') {
             e.preventDefault();
             if (this.keys.Space && this.chargeEndCallback) {
@@ -57,10 +63,10 @@ export class InputSystem {
         let moveX = 0;
         let moveZ = 0;
 
-        if (this.keys.ArrowLeft) moveX -= 1;
-        if (this.keys.ArrowRight) moveX += 1;
-        if (this.keys.ArrowUp) moveZ -= 1;
-        if (this.keys.ArrowDown) moveZ += 1;
+        if (this.keys.ArrowLeft || this.keys.a) moveX -= 1;
+        if (this.keys.ArrowRight || this.keys.d) moveX += 1;
+        if (this.keys.ArrowUp || this.keys.w) moveZ -= 1;
+        if (this.keys.ArrowDown || this.keys.s) moveZ += 1;
 
         if (moveX !== 0 || moveZ !== 0) {
             const length = Math.sqrt(moveX * moveX + moveZ * moveZ);

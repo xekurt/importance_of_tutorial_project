@@ -1,24 +1,37 @@
-import { STAGES } from '../config/constants.js';
-
 export class StageManager {
     constructor() {
-        this.stages = STAGES;
+        this.stages = [];
         this.currentStageIndex = 0;
         this.stageChangeCallback = null;
+    }
+
+    setLevel(levelData) {
+        this.stages = levelData.stages || [];
+        this.currentStageIndex = 0;
     }
 
     updateStage(playerPosition) {
         const z = playerPosition.z;
         let newStageIndex = this.currentStageIndex;
 
-        if (z < 10) {
-            newStageIndex = 0;
-        } else if (z >= 10 && z < 25) {
-            newStageIndex = 1;
-        } else if (z >= 25 && z < 45) {
-            newStageIndex = 2;
-        } else if (z >= 45) {
-            newStageIndex = 3;
+        // Dynamic stage detection based on platform ends
+        for (let i = 0; i < this.stages.length; i++) {
+            const stage = this.stages[i];
+            const nextStage = this.stages[i + 1];
+
+            const stageStart = stage.platformStart;
+            const stageEnd = stage.platformEnd;
+
+            if (z >= stageStart && (nextStage ? z < nextStage.platformStart : true)) {
+                newStageIndex = i;
+                break;
+            }
+        }
+
+        // Check for level completion (reached the goal platform beyond the last stage)
+        const lastStage = this.stages[this.stages.length - 1];
+        if (lastStage && z >= (lastStage.nextPlatformEnd || lastStage.platformEnd + 5)) {
+            newStageIndex = this.stages.length;
         }
 
         if (newStageIndex !== this.currentStageIndex) {

@@ -1,21 +1,43 @@
 import * as THREE from 'three';
-import { PLATFORMS, COLORS } from '../config/constants.js';
+import { COLORS } from '../config/constants.js';
 
 export class LevelBuilder {
     constructor(scene) {
         this.scene = scene;
         this.platformGroup = new THREE.Group();
-        this.buildLevel();
+        this.obstacleGroup = new THREE.Group();
+        this.scene.add(this.platformGroup);
+        this.scene.add(this.obstacleGroup);
     }
 
-    buildLevel() {
+    clearLevel() {
+        while (this.platformGroup.children.length > 0) {
+            this.platformGroup.remove(this.platformGroup.children[0]);
+        }
+        while (this.obstacleGroup.children.length > 0) {
+            this.obstacleGroup.remove(this.obstacleGroup.children[0]);
+        }
+    }
+
+    buildLevel(levelData) {
+        this.clearLevel();
+
         const platformMaterial = new THREE.MeshStandardMaterial({
             color: COLORS.PLATFORM,
             roughness: 0.7,
             metalness: 0.3
         });
 
-        PLATFORMS.forEach((platformData) => {
+        const obstacleMaterial = new THREE.MeshStandardMaterial({
+            color: COLORS.OBSTACLE,
+            roughness: 0.4,
+            metalness: 0.6,
+            emissive: COLORS.OBSTACLE,
+            emissiveIntensity: 0.2
+        });
+
+        // Build platforms
+        levelData.platforms.forEach((platformData) => {
             const geometry = new THREE.BoxGeometry(
                 platformData.size.x,
                 platformData.size.y,
@@ -44,6 +66,26 @@ export class LevelBuilder {
             this.platformGroup.add(platform);
         });
 
-        this.scene.add(this.platformGroup);
+        // Build obstacles
+        if (levelData.obstacles) {
+            levelData.obstacles.forEach((obstacleData) => {
+                const geometry = new THREE.BoxGeometry(
+                    obstacleData.size.x,
+                    obstacleData.size.y,
+                    obstacleData.size.z
+                );
+
+                const obstacle = new THREE.Mesh(geometry, obstacleMaterial);
+                obstacle.position.set(
+                    obstacleData.position.x,
+                    obstacleData.position.y,
+                    obstacleData.position.z
+                );
+                obstacle.receiveShadow = true;
+                obstacle.castShadow = true;
+
+                this.obstacleGroup.add(obstacle);
+            });
+        }
     }
 }

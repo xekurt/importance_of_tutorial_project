@@ -69,7 +69,7 @@ export class GoalParticleSystem {
 
         for (let i = 0; i < particleCount; i++) {
             particlePositions[i * 3] = (Math.random() - 0.5) * 8;
-            particlePositions[i * 3 + 1] = Math.random() * 3;
+            particlePositions[i * 3 + 1] = Math.random() * 3 - 5; // Start below view
             particlePositions[i * 3 + 2] = 47.5 + (Math.random() - 0.5) * 4;
 
             this.particleVelocities.push({
@@ -89,7 +89,22 @@ export class GoalParticleSystem {
         });
 
         this.goalParticles = new THREE.Points(particleGeometry, particleMaterial);
+        this.goalParticles.visible = false;
         this.scene.add(this.goalParticles);
+    }
+
+    spawn(position) {
+        const positions = this.goalParticles.geometry.attributes.position.array;
+        const particleCount = PARTICLE_SETTINGS.GOAL_COUNT;
+
+        for (let i = 0; i < particleCount; i++) {
+            positions[i * 3] = position.x + (Math.random() - 0.5) * 4;
+            positions[i * 3 + 1] = position.y + (Math.random() - 0.5) * 4;
+            positions[i * 3 + 2] = position.z + (Math.random() - 0.5) * 4;
+        }
+
+        this.goalParticles.geometry.attributes.position.needsUpdate = true;
+        this.goalParticles.visible = true;
     }
 
     update(deltaTime) {

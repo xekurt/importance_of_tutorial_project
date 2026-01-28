@@ -159,3 +159,160 @@ canvas {
     opacity: 1;
   }
 }
+
+#retry-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(10px);
+}
+
+.retry-content {
+  background: linear-gradient(135deg, #222, #111);
+  padding: 3rem;
+  border-radius: 20px;
+  border: 2px solid #ff3344;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(255, 51, 68, 0.3);
+  animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.retry-content h1 {
+  color: #ff3344;
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: 5px;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+  font-family: inherit;
+}
+
+.retry-content p {
+  color: #ccc;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+#retry-button {
+  background: #ff3344;
+  color: white;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(255, 51, 68, 0.4);
+}
+
+#retry-button:hover {
+  background: #ff5566;
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(255, 51, 68, 0.6);
+}
+
+#retry-button:active {
+  transform: scale(0.95);
+}
+
+#complete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(10px);
+}
+
+.complete-content {
+  background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+  padding: 3rem;
+  border-radius: 20px;
+  border: 2px solid #ffd700;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.2);
+  animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.complete-content h1 {
+  color: #ffd700;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.complete-content p {
+  color: #eee;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.complete-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+#next-level-button,
+#retry-level-button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+#next-level-button {
+  background: #ffd700;
+  color: #000;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+#next-level-button:hover {
+  background: #ffea00;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+#retry-level-button {
+  background: transparent;
+  color: #ffd700;
+  border: 2px solid #ffd700;
+}
+
+#retry-level-button:hover {
+  background: rgba(255, 215, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+#next-level-button:active,
+#retry-level-button:active {
+  transform: translateY(0);
+}

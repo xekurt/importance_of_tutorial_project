@@ -10,55 +10,142 @@ export const COLORS = {
     PLAYER_BASE: 0xff3344,
     PLAYER_CHARGED: 0x8b0000,
     PLATFORM: 0x4a4a4a,
+    OBSTACLE: 0xff5500,
     GOAL: 0xffd700,
     SKY: 0x87ceeb
 };
 
-export const STAGES = [
+export const LEVELS = [
     {
-        name: 'Stage 1',
-        spawnPoint: { x: 0, y: 0.5, z: 0 },
-        text: 'Hold SPACE to Charge, Release to Jump',
-        platformStart: -5,
-        platformEnd: 10
+        id: 1,
+        name: 'Level 1: The Basics',
+        stages: [
+            {
+                name: 'Stage 1',
+                spawnPoint: { x: 0, y: 0.5, z: 0 },
+                text: 'Hold SPACE to Charge, Release to Jump',
+                platformStart: -5,
+                platformEnd: 10
+            },
+            {
+                name: 'Stage 2',
+                spawnPoint: { x: 0, y: 0.5, z: 12 },
+                text: 'Jump across the gap!',
+                platformStart: 10,
+                platformEnd: 14,
+                gapEnd: 17,
+                nextPlatformEnd: 25
+            },
+            {
+                name: 'Stage 3',
+                spawnPoint: { x: 0, y: 0.5, z: 28 },
+                text: 'Maximum Power Required!',
+                platformStart: 25,
+                platformEnd: 30,
+                gapEnd: 38,
+                nextPlatformEnd: 45
+            }
+        ],
+        platforms: [
+            { position: { x: 0, y: -0.25, z: 2.5 }, size: { x: 10, y: 0.5, z: 15 } },
+            { position: { x: 0, y: -0.25, z: 12 }, size: { x: 10, y: 0.5, z: 4 } },
+            { position: { x: 0, y: -0.25, z: 21 }, size: { x: 10, y: 0.5, z: 8 } },
+            { position: { x: 0, y: -0.25, z: 27.5 }, size: { x: 10, y: 0.5, z: 5 } },
+            { position: { x: 0, y: -0.25, z: 41.5 }, size: { x: 10, y: 0.5, z: 7 } },
+            { position: { x: 0, y: -0.25, z: 47.5 }, size: { x: 10, y: 0.5, z: 5 }, isGoal: true }
+        ],
+        collisionBounds: [
+            { minZ: -5, maxZ: 10, minX: -5, maxX: 5 },
+            { minZ: 10, maxZ: 14, minX: -5, maxX: 5 },
+            { minZ: 17, maxZ: 25, minX: -5, maxX: 5 },
+            { minZ: 25, maxZ: 30, minX: -5, maxX: 5 },
+            { minZ: 38, maxZ: 45, minX: -5, maxX: 5 },
+            { minZ: 45, maxZ: 50, minX: -5, maxX: 5 }
+        ],
+        obstacles: []
     },
     {
-        name: 'Stage 2',
-        spawnPoint: { x: 0, y: 0.5, z: 12 },
-        text: 'Jump across the gap!',
-        platformStart: 10,
-        platformEnd: 14,
-        gapEnd: 17,
-        nextPlatformEnd: 25
+        id: 2,
+        name: 'Level 2: The Obstacles',
+        stages: [
+            {
+                name: 'Stage 1',
+                spawnPoint: { x: 0, y: 0.5, z: 0 },
+                text: 'Watch out for the blocks!',
+                platformStart: -5,
+                platformEnd: 10
+            },
+            {
+                name: 'Stage 2',
+                spawnPoint: { x: 0, y: 0.5, z: 15 },
+                text: 'Time your jump carefully',
+                platformStart: 10,
+                platformEnd: 14,
+                gapEnd: 18,
+                nextPlatformEnd: 25
+            },
+            {
+                name: 'Stage 3',
+                spawnPoint: { x: 0, y: 0.5, z: 30 },
+                text: 'Precision is key!',
+                platformStart: 25,
+                platformEnd: 30,
+                gapEnd: 40,
+                nextPlatformEnd: 50
+            }
+        ],
+        platforms: [
+            { position: { x: 0, y: -0.25, z: 2.5 }, size: { x: 10, y: 0.5, z: 15 } },
+            { position: { x: 0, y: -0.25, z: 15 }, size: { x: 10, y: 0.5, z: 6 } },
+            { position: { x: 0, y: -0.25, z: 30 }, size: { x: 10, y: 0.5, z: 10 } },
+            { position: { x: 0, y: -0.25, z: 50 }, size: { x: 10, y: 0.5, z: 10 }, isGoal: true }
+        ],
+        collisionBounds: [
+            { minZ: -5, maxZ: 10, minX: -5, maxX: 5 },
+            { minZ: 12, maxZ: 18, minX: -5, maxX: 5 },
+            { minZ: 25, maxZ: 35, minX: -5, maxX: 5 },
+            { minZ: 45, maxZ: 55, minX: -5, maxX: 5 }
+        ],
+        obstacles: [
+            { position: { x: 0, y: 3, z: 12 }, size: { x: 10, y: 2, z: 2 } },
+            { position: { x: 0, y: 4, z: 20 }, size: { x: 10, y: 2, z: 2 } },
+            { position: { x: 0, y: 5, z: 40 }, size: { x: 10, y: 2, z: 2 } }
+        ]
     },
     {
-        name: 'Stage 3',
-        spawnPoint: { x: 0, y: 0.5, z: 28 },
-        text: 'Maximum Power Required!',
-        platformStart: 25,
-        platformEnd: 30,
-        gapEnd: 38,
-        nextPlatformEnd: 45
+        id: 3,
+        name: 'Level 3: Master Jump',
+        stages: [
+            {
+                name: 'Stage 1',
+                spawnPoint: { x: 0, y: 0.5, z: 0 },
+                text: 'Final Challenge!',
+                platformStart: -5,
+                platformEnd: 10,
+                nextPlatformEnd: 35
+            }
+        ],
+        platforms: [
+            { position: { x: 0, y: -0.25, z: 2.5 }, size: { x: 10, y: 0.5, z: 15 } },
+            { position: { x: 0, y: -0.25, z: 40 }, size: { x: 10, y: 0.5, z: 10 }, isGoal: true }
+        ],
+        collisionBounds: [
+            { minZ: -5, maxZ: 10, minX: -5, maxX: 5 },
+            { minZ: 35, maxZ: 45, minX: -5, maxX: 5 }
+        ],
+        obstacles: [
+            { position: { x: 0, y: 4, z: 20 }, size: { x: 2, y: 8, z: 2 } },
+            { position: { x: 3, y: 4, z: 20 }, size: { x: 2, y: 8, z: 2 } },
+            { position: { x: -3, y: 4, z: 20 }, size: { x: 2, y: 8, z: 2 } }
+        ]
     }
 ];
 
-export const PLATFORMS = [
-    { position: { x: 0, y: -0.25, z: 2.5 }, size: { x: 10, y: 0.5, z: 15 } },
-    { position: { x: 0, y: -0.25, z: 12 }, size: { x: 10, y: 0.5, z: 4 } },
-    { position: { x: 0, y: -0.25, z: 21 }, size: { x: 10, y: 0.5, z: 8 } },
-    { position: { x: 0, y: -0.25, z: 27.5 }, size: { x: 10, y: 0.5, z: 5 } },
-    { position: { x: 0, y: -0.25, z: 41.5 }, size: { x: 10, y: 0.5, z: 7 } },
-    { position: { x: 0, y: -0.25, z: 47.5 }, size: { x: 10, y: 0.5, z: 5 }, isGoal: true }
-];
-
-export const COLLISION_BOUNDS = [
-    { minZ: -5, maxZ: 10, minX: -5, maxX: 5 },
-    { minZ: 10, maxZ: 14, minX: -5, maxX: 5 },
-    { minZ: 17, maxZ: 25, minX: -5, maxX: 5 },
-    { minZ: 25, maxZ: 30, minX: -5, maxX: 5 },
-    { minZ: 38, maxZ: 45, minX: -5, maxX: 5 },
-    { minZ: 45, maxZ: 50, minX: -5, maxX: 5 }
-];
+// Re-export constants for backward compatibility where needed, 
+// though we'll update the systems to use LEVELS
+export const STAGES = LEVELS[0].stages;
+export const PLATFORMS = LEVELS[0].platforms;
+export const COLLISION_BOUNDS = LEVELS[0].collisionBounds;
 
 export const PARTICLE_SETTINGS = {
     GOAL_COUNT: 100,
