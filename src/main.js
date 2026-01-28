@@ -26,8 +26,11 @@ class Game {
     this.wallSlideSpeed = -2; // Slow slide down speed
     this.wallNormal = { x: 0, y: 0, z: 0 };
     this.initializeSystems();
-    this.loadLevel(this.currentLevelIndex);
     this.wireUpEvents();
+
+    // Start with Main Menu
+    this.isGameOver = true;
+    this.uiManager.showMainMenu();
     this.startGameLoop();
   }
 
@@ -169,6 +172,17 @@ class Game {
 
     this.inputSystem.onCameraToggle(() => {
       this.cameraController.toggleAngle();
+    });
+
+    // Main Menu Events
+    this.uiManager.onStartTutorial(() => {
+      this.currentLevelIndex = 0;
+      this.loadLevel(0);
+      this.isGameOver = false;
+    });
+
+    this.uiManager.onStartGame(() => {
+      // Future game logic
     });
   }
 

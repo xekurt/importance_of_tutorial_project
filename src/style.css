@@ -16,6 +16,80 @@ canvas {
   height: 100vh;
 }
 
+#main-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  backdrop-filter: blur(15px);
+}
+
+.menu-content {
+  text-align: center;
+  animation: fadeIn 1s ease-out;
+}
+
+.menu-content h1 {
+  color: #fff;
+  font-size: 5rem;
+  letter-spacing: 15px;
+  margin-bottom: 3rem;
+  text-shadow: 0 0 30px rgba(255, 102, 102, 0.5);
+  font-weight: 900;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.menu-buttons button {
+  width: 300px;
+  padding: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border-radius: 50px;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 2px;
+}
+
+.menu-buttons button:hover:not(.disabled) {
+  background: #fff;
+  color: #000;
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.menu-buttons button.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 #tutorial-overlay {
   position: absolute;
   top: 50%;

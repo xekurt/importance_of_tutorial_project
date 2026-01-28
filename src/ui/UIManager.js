@@ -14,6 +14,32 @@ export class UIManager {
 
         this.healthBarFill = document.getElementById('health-bar-fill');
         this.healthText = document.getElementById('health-text');
+
+        this.mainMenuOverlay = document.getElementById('main-menu-overlay');
+        this.startTutorialBtn = document.getElementById('start-tutorial-btn');
+        this.startGameBtn = document.getElementById('start-game-btn');
+    }
+
+    onStartTutorial(callback) {
+        this.startTutorialBtn.addEventListener('click', () => {
+            this.hideMainMenu();
+            callback();
+        });
+    }
+
+    onStartGame(callback) {
+        this.startGameBtn.addEventListener('click', () => {
+            // Placeholder for now
+            console.log('Start Game clicked');
+        });
+    }
+
+    showMainMenu() {
+        this.mainMenuOverlay.style.display = 'flex';
+    }
+
+    hideMainMenu() {
+        this.mainMenuOverlay.style.display = 'none';
     }
 
     updateHealthBar(health) {
