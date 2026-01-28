@@ -20,6 +20,11 @@ class Game {
     this.health = 100;
     this.lastDamageTime = 0;
     this.damageCooldown = 500; // ms
+    this.wallContactTime = 0;
+    this.wallJumpWindow = 400; // ms window to jump after touching wall
+    this.isWallTouching = false;
+    this.wallSlideSpeed = -2; // Slow slide down speed
+    this.wallNormal = { x: 0, y: 0, z: 0 };
     this.initializeSystems();
     this.loadLevel(this.currentLevelIndex);
     this.wireUpEvents();
@@ -91,7 +96,7 @@ class Game {
       }
       this.lastDamageTime = now;
 
-      const damage = Math.floor(Math.random() * (15 - 7 + 1)) + 7;
+      const damage = Math.floor(Math.random() * (15 - 7 + 1));
       this.health -= damage;
       this.uiManager.updateHealthBar(this.health);
 
@@ -119,7 +124,8 @@ class Game {
 
   wireUpEvents() {
     this.inputSystem.onChargeStart(() => {
-      if (this.player.isGrounded && !this.isGameOver) {
+      const canJump = this.player.isGrounded || (this.isWallTouching && (performance.now() - this.wallContactTime < this.wallJumpWindow));
+      if (canJump && !this.isGameOver) {
         this.player.isCharging = true;
         this.player.chargeStartTime = performance.now();
       }
@@ -129,7 +135,16 @@ class Game {
       if (this.player.isCharging && !this.isGameOver) {
         const jumpVelocity = InputSystem.calculateJumpVelocity(this.player.chargeLevel);
         this.player.velocity.y = jumpVelocity;
+
+        // If it was a wall jump, give a dash away from the wall
+        if (!this.player.isGrounded && this.isWallTouching) {
+          const dashPower = 15;
+          this.player.velocity.x = this.wallNormal.x * dashPower;
+          this.player.velocity.z = this.wallNormal.z * dashPower;
+        }
+
         this.player.isGrounded = false;
+        this.isWallTouching = false; // Reset wall touch after jumping
         this.player.lastChargeLevel = this.player.chargeLevel;
         this.player.isCharging = false;
         this.player.chargeLevel = 0;
@@ -193,8 +208,26 @@ class Game {
     this.physicsSystem.handleGroundCollision(this.player);
 
     // Collision checks
-    if (this.collisionSystem.resolveObstacleCollisions(this.player)) {
+    const collisionInfo = this.collisionSystem.resolveObstacleCollisions(this.player);
+
+    if (collisionInfo.collided) {
+      if (!this.isWallTouching) {
+        this.wallContactTime = performance.now();
+        this.wallNormal = collisionInfo.normal;
+      }
+      this.isWallTouching = true;
+
+      // Wall Grab/Slide Mechanic: Slow down falling while touching wall
+      if (this.player.velocity.y < this.wallSlideSpeed) {
+        this.player.velocity.y = this.wallSlideSpeed;
+      }
+
       this.handleGameOver('HIT AN OBSTACLE!');
+    } else {
+      // Small delay before losing wall contact state to allow for jumping
+      if (performance.now() - this.wallContactTime > this.wallJumpWindow) {
+        this.isWallTouching = false;
+      }
     }
 
     if (this.collisionSystem.hasFallen(this.player)) {

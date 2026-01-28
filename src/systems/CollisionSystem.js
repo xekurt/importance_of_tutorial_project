@@ -34,7 +34,7 @@ export class CollisionSystem {
     resolveObstacleCollisions(player) {
         const position = player.getPosition();
         const radius = 0.5;
-        let collided = false;
+        let collisionInfo = { collided: false, normal: { x: 0, y: 0, z: 0 } };
 
         for (const obstacle of this.obstacles) {
             const halfX = obstacle.size.x / 2;
@@ -50,27 +50,33 @@ export class CollisionSystem {
             const absDz = Math.abs(dz);
 
             if (absDx < (halfX + radius) && absDy < (halfY + radius) && absDz < (halfZ + radius)) {
-                collided = true;
+                collisionInfo.collided = true;
 
                 // Find overlap on each axis
                 const overlapX = (halfX + radius) - absDx;
                 const overlapY = (halfY + radius) - absDy;
                 const overlapZ = (halfZ + radius) - absDz;
 
-                // Push out on the axis with the smallest overlap
+                // Push out on the axis with the smallest overlap and record normal
                 if (overlapX < overlapY && overlapX < overlapZ) {
-                    position.x += dx > 0 ? overlapX : -overlapX;
+                    const dir = dx > 0 ? 1 : -1;
+                    position.x += dir * overlapX;
                     player.velocity.x = 0;
+                    collisionInfo.normal.x = dir;
                 } else if (overlapY < overlapX && overlapY < overlapZ) {
-                    position.y += dy > 0 ? overlapY : -overlapY;
+                    const dir = dy > 0 ? 1 : -1;
+                    position.y += dir * overlapY;
                     player.velocity.y = 0;
+                    collisionInfo.normal.y = dir;
                 } else {
-                    position.z += dz > 0 ? overlapZ : -overlapZ;
+                    const dir = dz > 0 ? 1 : -1;
+                    position.z += dir * overlapZ;
                     player.velocity.z = 0;
+                    collisionInfo.normal.z = dir;
                 }
             }
         }
-        return collided;
+        return collisionInfo;
     }
 
     hasFallen(player) {

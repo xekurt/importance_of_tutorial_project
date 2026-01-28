@@ -114,29 +114,51 @@ export const LEVELS = [
     },
     {
         id: 3,
-        name: 'Level 3: Master Jump',
+        name: 'Level 3: Master of the Walls',
         stages: [
             {
                 name: 'Stage 1',
                 spawnPoint: { x: 0, y: 0.5, z: 0 },
-                text: 'Final Challenge!',
+                text: 'Master the Wall Jump to cross the abyss!',
                 platformStart: -5,
                 platformEnd: 10,
-                nextPlatformEnd: 35
+                nextPlatformEnd: 33
+            },
+            {
+                name: 'Rest Stage',
+                spawnPoint: { x: 0, y: 0.5, z: 38 },
+                text: 'Safe Zone reached! Ready for the home stretch?',
+                platformStart: 33,
+                platformEnd: 43,
+                nextPlatformEnd: 70
             }
         ],
         platforms: [
             { position: { x: 0, y: -0.25, z: 2.5 }, size: { x: 10, y: 0.5, z: 15 } },
-            { position: { x: 0, y: -0.25, z: 40 }, size: { x: 10, y: 0.5, z: 10 }, isGoal: true }
+            { position: { x: 0, y: -0.25, z: 38 }, size: { x: 10, y: 0.5, z: 10 } },
+            { position: { x: 0, y: -0.25, z: 75 }, size: { x: 10, y: 0.5, z: 10 }, isGoal: true }
         ],
         collisionBounds: [
             { minZ: -5, maxZ: 10, minX: -5, maxX: 5 },
-            { minZ: 35, maxZ: 45, minX: -5, maxX: 5 }
+            { minZ: 33, maxZ: 43, minX: -5, maxX: 5 },
+            { minZ: 70, maxZ: 80, minX: -5, maxX: 5 }
         ],
         obstacles: [
-            { position: { x: 0, y: 4, z: 20 }, size: { x: 1, y: 6, z: 0.5 } },
-            { position: { x: 3, y: 4, z: 20 }, size: { x: 1, y: 6, z: 0.5 } },
-            { position: { x: -3, y: 4, z: 20 }, size: { x: 1, y: 6, z: 0.5 } }
+            // Row 1 - Close to start
+            { position: { x: -4.5, y: 4, z: 16 }, size: { x: 1, y: 10, z: 4 } },
+            { position: { x: 4.5, y: 4, z: 16 }, size: { x: 1, y: 10, z: 4 } },
+
+            // Row 2
+            { position: { x: -4.5, y: 5, z: 27 }, size: { x: 1, y: 12, z: 5 } },
+            { position: { x: 4.5, y: 5, z: 27 }, size: { x: 1, y: 12, z: 5 } },
+
+            // Row 3
+            { position: { x: -4.5, y: 6, z: 51 }, size: { x: 1, y: 14, z: 6 } },
+            { position: { x: 4.5, y: 6, z: 51 }, size: { x: 1, y: 14, z: 6 } },
+
+            // Row 4
+            { position: { x: -4.5, y: 7, z: 65 }, size: { x: 1, y: 16, z: 6 } },
+            { position: { x: 4.5, y: 7, z: 65 }, size: { x: 1, y: 16, z: 6 } }
         ]
     }
 ];
